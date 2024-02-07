@@ -13,8 +13,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import pages.CheckOutCompletePage;
@@ -23,6 +25,7 @@ import pages.CheckOutOverviewPage;
 import pages.LoginPage;
 import pages.ProductListingPage;
 import pages.ShoppingCartPage;
+import utilities.DataExcel;
 import utilities.EvidenceCap;
 
 
@@ -34,7 +37,9 @@ import utilities.EvidenceCap;
 	File screen; // - Screenshot - 
 	String DocumentName = "Test Evidences - EvidencesPOM.docx";
 	
-	
+	String directorioDatos="..\\SwagLabs\\DataLoginFolder\\";
+	String nombreArchivoDatos = "dataLogin.xlsx";
+	String nombreHoja = "Sheet1";
 	
 	
 	@BeforeSuite
@@ -47,12 +52,13 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "login write user and password", priority=1)
-	public void login() throws IOException, InterruptedException, InvalidFormatException {
+	@Test (dataProvider="Datos Login Excel", description = "login write user and password", priority=1)
+	public void login(String email, String password) throws IOException, InterruptedException, InvalidFormatException {
+		
 		//steps to login
 		LoginPage home = new LoginPage(driver); //import from package "pages"
-		home.enterUsername("standard_user");
-		home.enterPassword("secret_sauce");
+		home.enterUsername(email);
+		home.enterPassword(password);
 		
 		
 		EvidenceCap.setTittleForDocument(
@@ -69,6 +75,18 @@ import utilities.EvidenceCap;
 		
 	
 	}
+	
+	
+	@DataProvider(name= "Datos Login Excel")
+	public Object [][] obtenerDatosExcel() throws Exception{
+		return DataExcel.leerExcel(
+				directorioDatos + nombreArchivoDatos,
+				nombreHoja);
+				
+	}
+		
+	
+		
 	
 	
 	
@@ -151,7 +169,7 @@ import utilities.EvidenceCap;
 	
 	@AfterSuite()
 	public void tearDown() {
-		driver.close();
+		//driver.quit();
 	}
 
 }
