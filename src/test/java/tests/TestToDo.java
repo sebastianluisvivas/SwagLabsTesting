@@ -4,17 +4,20 @@ package tests;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
-
+import java.util.concurrent.TimeoutException;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+
+
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -29,7 +32,6 @@ import utilities.DataExcel;
 import utilities.EvidenceCap;
 
 
-
 	public class TestToDo {
 	String url = "https://www.saucedemo.com/";
 	WebDriver driver;
@@ -41,50 +43,90 @@ import utilities.EvidenceCap;
 	String nombreArchivoDatos = "dataLogin.xlsx";
 	String nombreHoja = "Sheet1";
 	
+	String email;
+    String password;
 	
 	@BeforeSuite
-	public void setUp() {
+	public void setUp() throws Exception {
 		driver = new EdgeDriver();
 		driver.get(url);
 		driver.manage().window().maximize();
+		
+		/*Iniciar sesión con el primer usuario del archivo Excel*/
+	    LoginPage home = new LoginPage(driver);
+	    
+	    Object[][] data = DataExcel.leerExcel(directorioDatos + nombreArchivoDatos, nombreHoja);
+	    email = data[0][0].toString();
+	    password = data[0][1].toString();
+	    
+	    home.enterUsername(email);
+	    home.enterPassword(password);
+	    home.clickLogin();
+	    
+	    //home.clearFields();
 	}
 
 	
 	
 	
-	@Test (dataProvider="Datos Login Excel", description = "login write user and password", priority=1)
-	public void login(String email, String password) throws IOException, InterruptedException, InvalidFormatException {
-		
-		//steps to login
-		LoginPage home = new LoginPage(driver); //import from package "pages"
-		home.enterUsername(email);
-		home.enterPassword(password);
-		
-		
-		EvidenceCap.setTittleForDocument(
-				EvidenceDirectoryFolder + DocumentName,
-				"Test Evidences - EvidencesPOM.docx",
-				25);
-		
-		
-		screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "01_loginScreenshot.png"));
-		EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, "Login Screenshot");
-		
-		home.clickLogin();
-		
-	
+	@Test(dataProvider = "Datos Login Excel", description = "login write user and password", priority = 1)
+	public void login(String email, String password) throws IOException, InterruptedException, InvalidFormatException, TimeoutException {
+	    // Limpiar los campos de inicio de sesión antes de cada inicio de sesión
+	    
+
+	    // Instanciar LoginPage y realizar el inicio de sesión con los datos proporcionados
+	    LoginPage home = new LoginPage(driver); //import from package "pages"
+	    home.enterUsername(email);
+	    home.enterPassword(password);
+
+	    // Resto del código para el inicio de sesión
+	    EvidenceCap.setTittleForDocument(
+	        EvidenceDirectoryFolder + DocumentName,
+	        "Test Evidences - EvidencesPOM.docx",
+	        25);
+
+	    screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+	    FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "01_loginScreenshot.png"));
+	    EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, "Login Screenshot");
+
+	    home.clickLogin();
 	}
 	
 	
+	
+	@AfterMethod(description = "logout on each test to start the following")
+	public void logout() throws InterruptedException {
+		try {
+	    ProductListingPage open = new ProductListingPage(driver);
+	    open.openLeftList();
+	    open.buttonLogOut();
+	
+	    LoginPage loginPage = new LoginPage(driver);
+	    driver.manage().window().maximize();
+
+        loginPage.clearFields();
+        Thread.sleep(1000);
+	    
+	}catch (NoSuchWindowException e) {
+		System.out.println("La ventana del navegador ya está cerrada.");
+	}
+		
+		
+	}
+
+	
+	
+	
+
 	@DataProvider(name= "Datos Login Excel")
-	public Object [][] obtenerDatosExcel() throws Exception{
-		return DataExcel.leerExcel(
-				directorioDatos + nombreArchivoDatos,
-				nombreHoja);
-				
+	public Object [][] obtenerDatosExcel() throws Exception {
+	    // Obtener los datos del Excel utilizando la clase DataExcel
+	    Object[][] data = DataExcel.leerExcel(directorioDatos + nombreArchivoDatos, nombreHoja);
+
+	    // Retornar los datos obtenidos del Excel
+	    return data;
 	}
-		
+
 	
 		
 	
@@ -167,9 +209,27 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@AfterSuite()
-	public void tearDown() {
-		//driver.quit();
+	
+	
+	@AfterSuite
+	public void tearDown() throws InterruptedException {
+	    try {
+	        ProductListingPage open = new ProductListingPage(driver);
+	        open.openLeftList();
+	        open.buttonLogOut();
+	    
+	        LoginPage loginPage = new LoginPage(driver);
+	        driver.manage().window().maximize();
+	    
+	        loginPage.clearFields();
+	        Thread.sleep(1000);
+	    } catch (NoSuchWindowException e) {
+	        System.out.println("La ventana del navegador ya está cerrada.");
+	    } finally {
+	        // Cerrar el navegador después de todas las pruebas
+	        driver.quit();
+	    }
 	}
+
 
 }
