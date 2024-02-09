@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -28,8 +29,8 @@ import pages.CheckOutOverviewPage;
 import pages.LoginPage;
 import pages.ProductListingPage;
 import pages.ShoppingCartPage;
-import utilities.DataExcel;
 import utilities.EvidenceCap;
+import utilities.DataExcel;
 
 
 	public class TestToDo {
@@ -52,18 +53,7 @@ import utilities.EvidenceCap;
 		driver.get(url);
 		driver.manage().window().maximize();
 		
-		/*Iniciar sesión con el primer usuario del archivo Excel*/
-	    LoginPage home = new LoginPage(driver);
 	    
-	    Object[][] data = DataExcel.leerExcel(directorioDatos + nombreArchivoDatos, nombreHoja);
-	    email = data[0][0].toString();
-	    password = data[0][1].toString();
-	    
-	    home.enterUsername(email);
-	    home.enterPassword(password);
-	    home.clickLogin();
-	    
-	    //home.clearFields();
 	}
 
 	
@@ -74,8 +64,11 @@ import utilities.EvidenceCap;
 	    // Limpiar los campos de inicio de sesión antes de cada inicio de sesión
 	    
 
-	    // Instanciar LoginPage y realizar el inicio de sesión con los datos proporcionados
-	    LoginPage home = new LoginPage(driver); //import from package "pages"
+	    
+	    LoginPage home = new LoginPage(driver); 
+	    //ESPERA
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+	    wait.until(ExpectedConditions.presenceOfElementLocated(By.id("user-name")));
 	    home.enterUsername(email);
 	    home.enterPassword(password);
 
@@ -120,12 +113,10 @@ import utilities.EvidenceCap;
 
 	@DataProvider(name= "Datos Login Excel")
 	public Object [][] obtenerDatosExcel() throws Exception {
-	    // Obtener los datos del Excel utilizando la clase DataExcel
-	    Object[][] data = DataExcel.leerExcel(directorioDatos + nombreArchivoDatos, nombreHoja);
-
-	    // Retornar los datos obtenidos del Excel
-	    return data;
-	}
+		return DataExcel.leerExcel(
+				directorioDatos + nombreArchivoDatos,
+				nombreHoja);
+	} 
 
 	
 		
@@ -133,7 +124,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "buy a product on the PLP", priority=2)
+	@Test (description = "buy a product on the PLP", priority=2, dependsOnMethods = "login")
 	public void buyProduct() throws InvalidFormatException, IOException, InterruptedException {
 		ProductListingPage purchase = new ProductListingPage(driver);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -149,7 +140,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "after purchase view full cart", priority=3)
+	@Test (description = "after purchase view full cart", priority=3, dependsOnMethods = "login")
 	public void viewFullCart() throws InvalidFormatException, IOException, InterruptedException {
 		ProductListingPage fullcart = new ProductListingPage(driver);
 		fullcart.clickOnFullCart();
@@ -165,7 +156,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "after click on checkout, complete with personal information", priority=4)
+	@Test (description = "after click on checkout, complete with personal information", priority=4, dependsOnMethods = "login")
 		
 		public void personalInformation() {
 		CheckOutInformationPage completePersonalInformation = new CheckOutInformationPage(driver);
@@ -176,7 +167,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "after complete personal information, confirm checkout", priority=5)
+	@Test (description = "after complete personal information, confirm checkout", priority=5, dependsOnMethods = "login")
 	public void confirmInformationCheckout() throws InvalidFormatException, IOException, InterruptedException {
 		CheckOutOverviewPage confirmPersonalInformation = new CheckOutOverviewPage(driver);
 		screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
@@ -194,7 +185,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = " information completed and purchase finished - back to PLP", priority=6 )
+	@Test (description = " information completed and purchase finished - back to PLP", priority=6, dependsOnMethods = "login" )
 	
 	public void checkOutComplete() throws InvalidFormatException, IOException, InterruptedException {
 		CheckOutCompletePage backToPLP = new CheckOutCompletePage(driver);
@@ -212,24 +203,11 @@ import utilities.EvidenceCap;
 	
 	
 	@AfterSuite
-	public void tearDown() throws InterruptedException {
-	    try {
-	        ProductListingPage open = new ProductListingPage(driver);
-	        open.openLeftList();
-	        open.buttonLogOut();
+	public void tearDown() {
 	    
-	        LoginPage loginPage = new LoginPage(driver);
-	        driver.manage().window().maximize();
-	    
-	        loginPage.clearFields();
-	        Thread.sleep(1000);
-	    } catch (NoSuchWindowException e) {
-	        System.out.println("La ventana del navegador ya está cerrada.");
-	    } finally {
-	        // Cerrar el navegador después de todas las pruebas
 	        driver.quit();
 	    }
 	}
 
 
-}
+
