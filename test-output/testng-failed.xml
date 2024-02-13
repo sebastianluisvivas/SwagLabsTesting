@@ -5,9 +5,10 @@
     <classes>
       <class name="tests.TestToDo">
         <methods>
+          <include name="checkProductCount"/>
           <include name="tearDown"/>
+          <include name="login"/>
           <include name="setUp"/>
-          <include name="logout"/>
         </methods>
       </class> <!-- tests.TestToDo -->
     </classes>

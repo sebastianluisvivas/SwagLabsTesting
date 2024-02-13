@@ -4,7 +4,7 @@ package tests;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
-
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -13,9 +13,11 @@ import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
@@ -92,6 +94,34 @@ import utilities.EvidenceCap;
 	}
 
 	
+
+	@Test (description = "remove product from the shopping cart", dependsOnMethods = "login")
+	
+	public void removeProduct () throws IOException, InvalidFormatException, InterruptedException {
+		if (loginSuccessful) {
+			
+			ProductListingPage shoppingCart = new ProductListingPage(driver);
+			shoppingCart.purchaseProduct();
+			shoppingCart.clickOnFullCart();
+			screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "02_ShoppCartFull.png"));
+			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName,
+												"Shopping cart full after buy a product and before remove it");
+		    
+			ShoppingCartPage cart = new ShoppingCartPage(driver);
+		    cart.clickRemoveButton();
+		    
+		    screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "03_ItemRemove.png"));
+			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName,
+												"The item was removed");
+		    cart.clickContinueShopping();
+			
+			
+		}
+	}
+	
+	
 	
 
 	@DataProvider(name= "Datos Login Excel")
@@ -104,6 +134,27 @@ import utilities.EvidenceCap;
 	
 	
 	
+	
+	@Test (description="Verify that the number of products on the PLP equals six.", dependsOnMethods = "login")
+	
+	public void checkProductCount () throws IOException, InvalidFormatException, InterruptedException {
+		
+		screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "04_ProductsPLP.png"));
+		EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName,
+											"Products on PLP");
+		
+	    List<WebElement> productList = driver.findElements(By.className("inventory_item"));
+	    
+	    
+	    Assert.assertEquals(productList.size(), 6, "The number of products is not as expected");
+
+	}
+	
+	
+	
+	
+	
 	@Test (description = "buy a product on the PLP", priority=2, dependsOnMethods = "login")
 	public void buyProduct() throws InvalidFormatException, IOException, InterruptedException {
 		if (loginSuccessful) {
@@ -112,12 +163,14 @@ import utilities.EvidenceCap;
 		    wait.until(ExpectedConditions.elementToBeClickable(purchase.getButtonAddToCart()));
 		    
 		    screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "02_PLPBeforeBuy.png"));
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "05_PLPBeforeBuy.png"));
 			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, "Product listing page (PLP) Before buy a product");
 		    
 			purchase.purchaseProduct();
 		}
 	}
+	
+	
 	
 	
 	
@@ -129,7 +182,7 @@ import utilities.EvidenceCap;
 		    ShoppingCartPage cart = new ShoppingCartPage(driver);
 		    
 		    screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "03_ShoppingCartFull.png"));
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "06_ShoppingCartFull.png"));
 			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, "Shopping cart full after buy a product");
 		    
 			cart.clickOnCheckOut();
@@ -141,10 +194,15 @@ import utilities.EvidenceCap;
 	
 	@Test (description = "after click on checkout, complete with personal information", priority=4, dependsOnMethods = "login")
 		
-		public void personalInformation() {
+		public void personalInformation() throws IOException, InvalidFormatException, InterruptedException {
 		if (loginSuccessful) {
 			CheckOutInformationPage completePersonalInformation = new CheckOutInformationPage(driver);
 			completePersonalInformation.completeInformation();
+			
+			screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "07_CheckOutInformationPage.png"));
+			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, 
+												"CheckOutInformation Page");
 		}	
 	}
 	
@@ -157,13 +215,14 @@ import utilities.EvidenceCap;
 
 			CheckOutOverviewPage confirmPersonalInformation = new CheckOutOverviewPage(driver);
 			screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "03_CompletePersonalInformation.png"));
-			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, "Checkout overview page - personal information");
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "08_CompletePersonalInformation.png"));
+			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName,
+												"Checkout overview page - personal information");
 			
 			confirmPersonalInformation.clickOnFinishButton();
 			
 			screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "04_PurchaseCompleted.png"));
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "09_PurchaseCompleted.png"));
 			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, "Purchase completed");
 	}
 }
@@ -180,8 +239,9 @@ import utilities.EvidenceCap;
 			backToPLP.clickOnButtonBackHome();
 			
 			screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "05_PLP_AfterPurchase.png"));
-			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, "Product listing page displayed after a product has been purchased");
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "010_PLP_AfterPurchase.png"));
+			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, 
+												"Product listing page displayed after a product has been purchased");
 			
 	}
 	
@@ -190,13 +250,22 @@ import utilities.EvidenceCap;
 	
 
 	@Test(description="open leftList and click on logout",priority=7)
-	public void logout() throws InterruptedException {
+	public void logout() throws InterruptedException, IOException, InvalidFormatException {
 		if (loginSuccessful) {
 			try {
 		    ProductListingPage open = new ProductListingPage(driver);
 		    open.openLeftList();
+		    screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "011_openLeftList.png"));
+			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, 
+												"Before logOut");
+			
+			
 		    open.buttonLogOut();
-		
+		    screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(screen, new File(EvidenceDirectoryFolder + "012_logOutComplete.png"));
+			EvidenceCap.captureScreenOnDocument(driver, ".\\SwagLabs\\Evidences\\", EvidenceDirectoryFolder + DocumentName, 
+												"Log out complete");
 		    LoginPage loginPage = new LoginPage(driver);
 		    
 	

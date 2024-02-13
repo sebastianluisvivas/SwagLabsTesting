@@ -14,7 +14,9 @@ public class ProductListingPage {
 	//WebElements to use
 	@FindBy(xpath="//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']")
 	WebElement buttonAddToCart;
+	
 	WebDriver driver;
+	
 	public WebElement getButtonAddToCart() {
 	    return buttonAddToCart;
 	}
