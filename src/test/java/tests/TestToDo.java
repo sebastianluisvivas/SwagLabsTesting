@@ -44,7 +44,7 @@ import utilities.EvidenceCap;
 	
 	String email;
     String password;
-    private boolean loginSuccessful;
+    private boolean loginSuccessful = false;
 	@BeforeSuite
 	public void setUp() throws Exception {	
 		driver = new EdgeDriver();
@@ -63,13 +63,13 @@ import utilities.EvidenceCap;
 	    LoginPage home = new LoginPage(driver); 
 	    
 	    
-		    //ESPERA
+		    
 		    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		    wait.until(ExpectedConditions.presenceOfElementLocated(By.id("user-name")));
 		    home.enterUsername(email);
 		    home.enterPassword(password);
 	
-		    // Resto del código para el inicio de sesión
+		    
 		    EvidenceCap.setTittleForDocument(
 		        EvidenceDirectoryFolder + DocumentName,
 		        "Test Evidences - EvidencesPOM.docx",
@@ -81,32 +81,16 @@ import utilities.EvidenceCap;
 	
 		    home.clickLogin();
 		    
-		    	    
-}
-	
-	
-	@Test(description="open leftList and click on logout",priority=7)
-	public void logout() throws InterruptedException {
-		if (loginSuccessful) {
-			try {
-		    ProductListingPage open = new ProductListingPage(driver);
-		    open.openLeftList();
-		    open.buttonLogOut();
-		
-		    LoginPage loginPage = new LoginPage(driver);
+		    try {
+		        WebDriverWait waitLogout = new WebDriverWait(driver, Duration.ofSeconds(10));
+		        waitLogout.until(ExpectedConditions.presenceOfElementLocated(By.id("logout_sidebar_link")));
+		        loginSuccessful = true;
+		    } catch (TimeoutException e) {
+		        loginSuccessful = false;
+		    }
 		    
-	
-	        loginPage.clearFields();
-	        Thread.sleep(1000);
-		    
-		}	catch (NoSuchWindowException e) {
-			System.out.println("La ventana del navegador ya está cerrada.");
-		}
-		
-		}	
 	}
 
-	
 	
 	
 
@@ -117,9 +101,6 @@ import utilities.EvidenceCap;
 				nombreHoja);
 	} 
 
-	
-		
-	
 	
 	
 	
@@ -207,6 +188,27 @@ import utilities.EvidenceCap;
 }
 	
 	
+
+	@Test(description="open leftList and click on logout",priority=7)
+	public void logout() throws InterruptedException {
+		if (loginSuccessful) {
+			try {
+		    ProductListingPage open = new ProductListingPage(driver);
+		    open.openLeftList();
+		    open.buttonLogOut();
+		
+		    LoginPage loginPage = new LoginPage(driver);
+		    
+	
+	        loginPage.clearFields();
+	        
+		    
+		}	catch (NoSuchWindowException e) {
+			System.out.println("La ventana del navegador ya está cerrada.");
+		}
+		
+		}	
+	}
 	
 	
 	@AfterSuite

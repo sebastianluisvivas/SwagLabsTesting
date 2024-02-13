@@ -4,6 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import com.github.javafaker.Faker;
+
+
 
 public class CheckOutInformationPage {
 
@@ -26,9 +29,16 @@ public class CheckOutInformationPage {
 
 
 	public void completeInformation() {
-		firstname.sendKeys("Sebastian");
-		lastname.sendKeys("Vivas");
-		postalcode.sendKeys("91218");
+        Faker faker = new Faker();
+
+        
+        String fakefirstname = faker.name().firstName(); 
+        String fakelastname = faker.name().lastName(); 
+        String fakepostalcode = faker.address().zipCode(); 
+		
+		firstname.sendKeys(fakefirstname);
+		lastname.sendKeys(fakelastname);
+		postalcode.sendKeys(fakepostalcode);
 		continuebutton.click();
 	}
 

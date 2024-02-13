@@ -6,13 +6,8 @@
       <class name="tests.TestToDo">
         <methods>
           <include name="tearDown"/>
-          <include name="confirmInformationCheckout"/>
-          <include name="login" invocation-numbers="1 2 3 4 5"/>
-          <include name="viewFullCart"/>
-          <include name="personalInformation"/>
           <include name="setUp"/>
-          <include name="buyProduct"/>
-          <include name="checkOutComplete"/>
+          <include name="logout"/>
         </methods>
       </class> <!-- tests.TestToDo -->
     </classes>
