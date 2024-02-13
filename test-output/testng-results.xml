@@ -2,16 +2,20 @@
 <testng-results ignored="0" total="9" passed="9" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-02-13T13:19:21 ART" name="Default suite" finished-at="2024-02-13T13:19:52 ART" duration-ms="30922">
+  <suite started-at="2024-02-13T18:22:36 ART" name="Default suite" finished-at="2024-02-13T18:23:04 ART" duration-ms="27376">
     <groups>
     </groups>
-    <test started-at="2024-02-13T13:19:21 ART" name="Default test" finished-at="2024-02-13T13:19:52 ART" duration-ms="30922">
+    <test started-at="2024-02-13T18:22:36 ART" name="Default test" finished-at="2024-02-13T18:23:04 ART" duration-ms="27376">
       <class name="tests.TestToDo">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:05 ART" name="setUp" finished-at="2024-02-13T13:19:21 ART" duration-ms="15312" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:26 ART" name="setUp" finished-at="2024-02-13T18:22:36 ART" duration-ms="9899" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="login(java.lang.String,java.lang.String)[pri:1, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:27 ART" name="login" description="login write user and password" data-provider="Datos Login Excel" finished-at="2024-02-13T13:19:32 ART" duration-ms="5027" status="PASS">
+        <test-method signature="removeProduct()[pri:0, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:36 ART" name="removeProduct" description="remove product from the shopping cart" finished-at="2024-02-13T18:22:36 ART" duration-ms="19" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- removeProduct -->
+        <test-method signature="login(java.lang.String,java.lang.String)[pri:1, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:42 ART" name="login" description="login write user and password" data-provider="Datos Login Excel" finished-at="2024-02-13T18:22:48 ART" duration-ms="5130" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -27,39 +31,35 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- login -->
-        <test-method signature="checkProductCount()[pri:0, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:32 ART" name="checkProductCount" description="Verify that the number of products on the PLP equals six." finished-at="2024-02-13T13:19:34 ART" depends-on-methods="tests.TestToDo.login" duration-ms="1250" status="PASS">
+        <test-method signature="checkProductCount()[pri:0, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:48 ART" name="checkProductCount" description="Verify that the number of products on the PLP equals six." finished-at="2024-02-13T18:22:49 ART" depends-on-methods="tests.TestToDo.login" duration-ms="1180" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- checkProductCount -->
-        <test-method signature="removeProduct()[pri:0, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:34 ART" name="removeProduct" description="remove product from the shopping cart" finished-at="2024-02-13T13:19:37 ART" depends-on-methods="tests.TestToDo.login" duration-ms="3263" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- removeProduct -->
-        <test-method signature="buyProduct()[pri:2, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:37 ART" name="buyProduct" description="buy a product on the PLP" finished-at="2024-02-13T13:19:39 ART" depends-on-methods="tests.TestToDo.login" duration-ms="1870" status="PASS">
+        <test-method signature="buyProduct()[pri:2, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:49 ART" name="buyProduct" description="buy a product on the PLP" finished-at="2024-02-13T18:22:50 ART" duration-ms="1465" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- buyProduct -->
-        <test-method signature="viewFullCart()[pri:3, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:39 ART" name="viewFullCart" description="after purchase view full cart" finished-at="2024-02-13T13:19:40 ART" depends-on-methods="tests.TestToDo.login" duration-ms="1671" status="PASS">
+        <test-method signature="viewFullCart()[pri:3, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:50 ART" name="viewFullCart" description="after purchase view full cart" finished-at="2024-02-13T18:22:52 ART" duration-ms="1279" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- viewFullCart -->
-        <test-method signature="personalInformation()[pri:4, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:40 ART" name="personalInformation" description="after click on checkout, complete with personal information" finished-at="2024-02-13T13:19:44 ART" depends-on-methods="tests.TestToDo.login" duration-ms="3618" status="PASS">
+        <test-method signature="personalInformation()[pri:4, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:52 ART" name="personalInformation" description="after click on checkout, complete with personal information" finished-at="2024-02-13T18:22:56 ART" duration-ms="4209" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- personalInformation -->
-        <test-method signature="confirmInformationCheckout()[pri:5, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:44 ART" name="confirmInformationCheckout" description="after complete personal information, confirm checkout" finished-at="2024-02-13T13:19:46 ART" depends-on-methods="tests.TestToDo.login" duration-ms="2326" status="PASS">
+        <test-method signature="confirmInformationCheckout()[pri:5, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:56 ART" name="confirmInformationCheckout" description="after complete personal information, confirm checkout" finished-at="2024-02-13T18:22:58 ART" duration-ms="2096" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- confirmInformationCheckout -->
-        <test-method signature="checkOutComplete()[pri:6, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:46 ART" name="checkOutComplete" description=" information completed and purchase finished - back to PLP" finished-at="2024-02-13T13:19:48 ART" depends-on-methods="tests.TestToDo.login" duration-ms="1611" status="PASS">
+        <test-method signature="checkOutComplete()[pri:6, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:58 ART" name="checkOutComplete" description=" information completed and purchase finished - back to PLP" finished-at="2024-02-13T18:22:59 ART" duration-ms="1501" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- checkOutComplete -->
-        <test-method signature="logout()[pri:7, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:48 ART" name="logout" description="open leftList and click on logout" finished-at="2024-02-13T13:19:52 ART" duration-ms="3420" status="PASS">
+        <test-method signature="logout()[pri:7, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:22:59 ART" name="logout" description="open leftList and click on logout" finished-at="2024-02-13T18:23:04 ART" duration-ms="4152" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- logout -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T13:19:52 ART" name="tearDown" finished-at="2024-02-13T13:19:53 ART" duration-ms="812" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:tests.TestToDo@75d3a5e0]" started-at="2024-02-13T18:23:04 ART" name="tearDown" finished-at="2024-02-13T18:23:05 ART" duration-ms="1336" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->

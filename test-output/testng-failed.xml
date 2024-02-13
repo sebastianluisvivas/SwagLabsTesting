@@ -7,7 +7,6 @@
         <methods>
           <include name="checkProductCount"/>
           <include name="tearDown"/>
-          <include name="login"/>
           <include name="setUp"/>
         </methods>
       </class> <!-- tests.TestToDo -->

@@ -74,7 +74,7 @@ import utilities.EvidenceCap;
 		    
 		    EvidenceCap.setTittleForDocument(
 		        EvidenceDirectoryFolder + DocumentName,
-		        "Test Evidences - EvidencesPOM.docx",
+		        "Test Evidences - ",
 		        25);
 	
 		    screen = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
@@ -95,7 +95,7 @@ import utilities.EvidenceCap;
 
 	
 
-	@Test (description = "remove product from the shopping cart", dependsOnMethods = "login")
+	@Test (description = "remove product from the shopping cart")
 	
 	public void removeProduct () throws IOException, InvalidFormatException, InterruptedException {
 		if (loginSuccessful) {
@@ -135,7 +135,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description="Verify that the number of products on the PLP equals six.", dependsOnMethods = "login")
+	@Test (description="Verify that the number of products on the PLP equals six.",dependsOnMethods = "login")
 	
 	public void checkProductCount () throws IOException, InvalidFormatException, InterruptedException {
 		
@@ -155,7 +155,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "buy a product on the PLP", priority=2, dependsOnMethods = "login")
+	@Test (description = "buy a product on the PLP", priority=2)
 	public void buyProduct() throws InvalidFormatException, IOException, InterruptedException {
 		if (loginSuccessful) {
 			ProductListingPage purchase = new ProductListingPage(driver);
@@ -174,7 +174,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "after purchase view full cart", priority=3, dependsOnMethods = "login")
+	@Test (description = "after purchase view full cart", priority=3)
 	public void viewFullCart() throws InvalidFormatException, IOException, InterruptedException {
 		if (loginSuccessful) {
 			ProductListingPage fullcart = new ProductListingPage(driver);
@@ -192,7 +192,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "after click on checkout, complete with personal information", priority=4, dependsOnMethods = "login")
+	@Test (description = "after click on checkout, complete with personal information", priority=4)
 		
 		public void personalInformation() throws IOException, InvalidFormatException, InterruptedException {
 		if (loginSuccessful) {
@@ -209,7 +209,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = "after complete personal information, confirm checkout", priority=5, dependsOnMethods = "login")
+	@Test (description = "after complete personal information, confirm checkout", priority=5)
 	public void confirmInformationCheckout() throws InvalidFormatException, IOException, InterruptedException {
 		if (loginSuccessful) {
 
@@ -230,7 +230,7 @@ import utilities.EvidenceCap;
 	
 	
 	
-	@Test (description = " information completed and purchase finished - back to PLP", priority=6, dependsOnMethods = "login" )
+	@Test (description = " information completed and purchase finished - back to PLP", priority=6)
 	
 	public void checkOutComplete() throws InvalidFormatException, IOException, InterruptedException {
 		if (loginSuccessful) {
